@@ -14,6 +14,7 @@
 module.exports = grammar({
   name: "pug",
   externals: ($) => [$._newline, $._indent, $._dedent],
+  extras: ($) => [/\s+/],
   rules: {
     source_file: ($) => repeat(
       choice(
@@ -344,6 +345,7 @@ module.exports = grammar({
             choice($.buffered_code, $.unescaped_buffered_code),
           ),
           seq(
+            repeat(" "),
             optional(seq(" ", $._content_or_javascript)),
             $._newline,
             optional($.children)
