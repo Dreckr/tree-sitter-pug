@@ -100,7 +100,14 @@ bool tree_sitter_pug_external_scanner_scan(void *payload, TSLexer *lexer,
     Scanner *scanner = (Scanner *)payload;
     if (lexer->lookahead == '\n') {
         if (valid_symbols[NEWLINE]) {
-            skip(lexer);
+            // Skip subsequent newline characters
+            for (;;) {
+                if (lexer->lookahead == '\n') {
+                    skip(lexer);
+                } else {
+                    break;
+                }
+            }
             lexer->result_symbol = NEWLINE;
             return true;
         }
@@ -119,6 +126,9 @@ bool tree_sitter_pug_external_scanner_scan(void *payload, TSLexer *lexer,
                 skip(lexer);
             } else if (lexer->lookahead == '\t') {
                 indent_length += 8;
+                skip(lexer);
+            } else if (lexer->lookahead == '\n') {
+                indent_length = 0;
                 skip(lexer);
             } else {
                 break;

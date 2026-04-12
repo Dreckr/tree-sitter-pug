@@ -154,10 +154,25 @@ Tag with children
 some-tag
   child-one content
   child-two(attr)
+  
+some-tag
+    
+  child-one content
+  child-two(attr)
 
 ---
 
 (source_file
+  (tag
+    (tag_name)
+    (children
+      (tag
+        (tag_name)
+        (content))
+      (tag
+        (tag_name)
+        (attributes
+          (attribute (attribute_name))))))
   (tag
     (tag_name)
     (children
