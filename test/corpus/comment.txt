@@ -9,6 +9,31 @@ comment
 (source_file
   (comment))
 
+========================
+Comment after blank and empty lines
+========================
+
+tag
+
+    // This is a comment after an empty line
+    tag
+      
+        // This is a comment after a blank line
+        tag
+
+---
+
+(source_file
+  (tag
+    (tag_name)
+    (children
+      (comment)
+      (tag
+        (tag_name)
+        (children
+          (comment)
+          (tag
+            (tag_name)))))))
 
 ========================
 Multiline comment
