@@ -1,3 +1,19 @@
 p
   | The pipe always goes at the beginning of its own line,
   | not counting indentation.
+
+========================
+Interpolation with nested braces
+========================
+
+span {{ a ? `, ${b}` : '' }}{{ { c: 1 }.c }} text #{ `${d}` }
+
+---
+
+(source_file
+  (tag
+    (tag_name)
+    (javascript)
+    (javascript)
+    (content)
+    (javascript)))

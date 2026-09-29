@@ -603,11 +603,11 @@ module.exports = grammar({
       ),
 
     // TODO: can _delimited_javascript and _un_delimited_javascript be merged?
-    _delimited_javascript: () => /[^\n}]+/,
+    // Allows up to two levels of nested braces, e.g. `{{ a ? `${b}` : { c: 1 } }}`
+    _delimited_javascript: () => /([^\n{}]|\{([^\n{}]|\{[^\n{}]*\})*\})+/,
     // I only want this node to be exposed sometimes
     _un_delimited_javascript: ($) => $._un_delimited_javascript_line,
     _un_delimited_javascript_line: ($) => /(.)+?/,
-    _un_delimited_javascript_multiline: ($) => repeat1(prec(1, $._un_delimited_javascript_line)),
     _single_line_buf_code: ($) =>
       prec.left(
         seq(
@@ -629,10 +629,19 @@ module.exports = grammar({
           optional($._dedent),
         ),
       ),
+    // Every line indented under `-` is javascript, until the block dedents
     _multi_line_buf_code: ($) =>
-      alias(seq(
-        $._un_delimited_javascript_multiline,
-      ), $.javascript),
+      alias(
+        prec.right(
+          repeat1(
+            seq(
+              optional(/[^\n]+/),
+              $._newline,
+            ),
+          ),
+        ),
+        $.javascript
+      ),
     unbuffered_code: ($) =>
       prec.right(
         seq(

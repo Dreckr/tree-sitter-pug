@@ -95,3 +95,27 @@ tag
       (comment)))
   (tag
     (tag_name)))
+
+========================
+Comment after multiline unbuffered code
+========================
+
+div
+  -
+    var a = 1
+
+    var b = 2
+  //- Comment
+  span
+
+---
+
+(source_file
+  (tag
+    (tag_name)
+    (children
+      (unbuffered_code
+        (javascript))
+      (comment)
+      (tag
+        (tag_name)))))

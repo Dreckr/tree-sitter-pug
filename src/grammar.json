@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "pug",
   "rules": {
     "source_file": {
@@ -1243,6 +1242,13 @@
               "type": "SEQ",
               "members": [
                 {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "STRING",
+                    "value": " "
+                  }
+                },
+                {
                   "type": "CHOICE",
                   "members": [
                     {
@@ -1262,13 +1268,6 @@
                       "type": "BLANK"
                     }
                   ]
-                },
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "STRING",
-                    "value": " "
-                  }
                 },
                 {
                   "type": "SYMBOL",
@@ -1962,8 +1961,7 @@
     },
     "class": {
       "type": "PATTERN",
-      "value": "\\.[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*",
-      "flags": "i"
+      "value": "\\.[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*"
     },
     "id": {
       "type": "PATTERN",
@@ -2226,7 +2224,7 @@
     },
     "_delimited_javascript": {
       "type": "PATTERN",
-      "value": "[^\\n}]+"
+      "value": "([^\\n{}]|\\{([^\\n{}]|\\{[^\\n{}]*\\})*\\})+"
     },
     "_un_delimited_javascript": {
       "type": "SYMBOL",
@@ -2235,17 +2233,6 @@
     "_un_delimited_javascript_line": {
       "type": "PATTERN",
       "value": "(.)+?"
-    },
-    "_un_delimited_javascript_multiline": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "SYMBOL",
-          "name": "_un_delimited_javascript_line"
-        }
-      }
     },
     "_single_line_buf_code": {
       "type": "PREC_LEFT",
@@ -2322,13 +2309,32 @@
     "_multi_line_buf_code": {
       "type": "ALIAS",
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_un_delimited_javascript_multiline"
+        "type": "PREC_RIGHT",
+        "value": 0,
+        "content": {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": "[^\\n]+"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_newline"
+              }
+            ]
           }
-        ]
+        }
       },
       "named": true,
       "value": "javascript"
@@ -2420,6 +2426,6 @@
     }
   ],
   "inline": [],
-  "supertypes": [],
-  "reserved": {}
+  "supertypes": []
 }
+
