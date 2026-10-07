@@ -446,3 +446,21 @@ img
   (tag
     (tag_name)))
 
+
+========================
+Tag with trailing whitespace and children
+========================
+
+p.cls   
+  i text
+
+---
+
+(source_file
+  (tag
+    (tag_name)
+    (class)
+    (children
+      (tag
+        (tag_name)
+        (content)))))

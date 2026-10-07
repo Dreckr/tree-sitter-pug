@@ -1242,6 +1242,13 @@
               "type": "SEQ",
               "members": [
                 {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "STRING",
+                    "value": " "
+                  }
+                },
+                {
                   "type": "CHOICE",
                   "members": [
                     {
