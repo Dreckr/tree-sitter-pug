@@ -2224,7 +2224,7 @@
     },
     "_delimited_javascript": {
       "type": "PATTERN",
-      "value": "[^\\n}]+"
+      "value": "([^\\n{}]|\\{([^\\n{}]|\\{[^\\n{}]*\\})*\\})+"
     },
     "_un_delimited_javascript": {
       "type": "SYMBOL",

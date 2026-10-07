@@ -602,7 +602,8 @@ module.exports = grammar({
       ),
 
     // TODO: can _delimited_javascript and _un_delimited_javascript be merged?
-    _delimited_javascript: () => /[^\n}]+/,
+    // Allows up to two levels of nested braces, e.g. `{{ a ? `${b}` : { c: 1 } }}`
+    _delimited_javascript: () => /([^\n{}]|\{([^\n{}]|\{[^\n{}]*\})*\})+/,
     // I only want this node to be exposed sometimes
     _un_delimited_javascript: ($) => $._un_delimited_javascript_line,
     _un_delimited_javascript_line: ($) => /(.)+?/,
