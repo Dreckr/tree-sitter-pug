@@ -2234,17 +2234,6 @@
       "type": "PATTERN",
       "value": "(.)+?"
     },
-    "_un_delimited_javascript_multiline": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "PREC",
-        "value": 1,
-        "content": {
-          "type": "SYMBOL",
-          "name": "_un_delimited_javascript_line"
-        }
-      }
-    },
     "_single_line_buf_code": {
       "type": "PREC_LEFT",
       "value": 0,
@@ -2320,13 +2309,32 @@
     "_multi_line_buf_code": {
       "type": "ALIAS",
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "_un_delimited_javascript_multiline"
+        "type": "PREC_RIGHT",
+        "value": 0,
+        "content": {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": "[^\\n]+"
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_newline"
+              }
+            ]
           }
-        ]
+        }
       },
       "named": true,
       "value": "javascript"
